@@ -27,12 +27,28 @@ def read(id: str, db: Session = Depends(get_db)):
 def store(user: CreateUser, db: Session = Depends(get_db)):
     to_store = User(
         name = user.name,
-        age = user.age
+        age = user.age,
+        password = user.password
     )
 
     db.add(to_store)
     db.commit()
     return {'message': 'User stored successfully.'}
+
+# @router.post('/register')
+# def register(request: CreateUser, db: Session = Depends(get_db)):
+#     try:
+#         request.password = password_hash(request.password)
+#         user = User(
+#             name = request.name,
+#             age = request.age,
+#             password = request.password
+#         )
+#         db.add(user)
+#         db.commit()
+#         return {'message': 'Registered Successfully!'}
+#     except Exception as e:
+#         print(e)
 
 @router.put('/{id}')
 def update(id: str, user: CreateUser, db: Session = Depends(get_db)): 
