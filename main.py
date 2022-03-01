@@ -1,16 +1,32 @@
-from fastapi import FastAPI, Depends
-from router import userRouter
+from fastapi import FastAPI, Request, Depends
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from sqlalchemy.orm import Session
+from router import authRouter, userRouter
+from database import get_db
+from models.postModel import Post
 
-import models
-from database import engine
-
-models.Base.metadata.create_all(bind=engine)
-
-import uuid
+# Register template folder
+template = Jinja2Templates('templates')
 
 app = FastAPI()
 
+# Register Routes
+app.include_router(authRouter.router)
 app.include_router(userRouter.router)
+
+@app.get('/', response_class=HTMLResponse)
+def index(request: Request, db: Session = Depends(get_db)):
+    try:
+        posts = db.query(Post).all()
+        return template.TemplateResponse('index.html', {
+            'request': request,
+            'posts': posts
+        })
+    except Exception as e:
+        print(e)
+
 
 # admin = {
 #     "username": "admin", 
