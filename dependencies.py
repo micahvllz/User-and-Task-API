@@ -2,7 +2,7 @@ from fastapi import Cookie, HTTPException
 from jose import jwt, JWTError
 
 
-secret = 'a very shady secret'
+secret = '663a6bf88c8c876764cd94e445eacd61154424e1eed23b0d3f0befe08bcd646c'
 
 def get_token(token: str = Cookie('token')):
     try:
