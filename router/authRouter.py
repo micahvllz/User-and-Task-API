@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends, Response
 from sqlalchemy.orm import Session
 from database import get_db
-from models.userModel import User
-from schemas.authSchema import TokenData, AuthForm
-from schemas.userSchema import CreateUser
+from models.adminModel import Admin
+from schemas.authSchema import AuthForm
 from jose import jwt
 from passlib.context import CryptContext
 
-secret = 'a very shady secret'
+secret = '663a6bf88c8c876764cd94e445eacd61154424e1eed23b0d3f0befe08bcd646c'
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 def password_verify(plain, hashed):
@@ -22,15 +21,14 @@ router = APIRouter(
 )
 
 @router.post('/register')
-def register(request: CreateUser, db: Session = Depends(get_db)):
+def register(request: AuthForm, db: Session = Depends(get_db)):
     try:
         request.password = password_hash(request.password)
-        user = User(
-            name = request.name,
-            age = request.age,
+        admin = Admin(
+            username = request.username,
             password = request.password
         )
-        db.add(user)
+        db.add(admin)
         db.commit()
         return {'message': 'Registered Successfully!'}
     except Exception as e:
@@ -39,11 +37,11 @@ def register(request: CreateUser, db: Session = Depends(get_db)):
 @router.post('/verify')
 def login(form: AuthForm, response: Response, db: Session = Depends(get_db)):
     try:
-        user = db.query(User).filter(User.name == form.name).first()
-        if user:
-            match = password_verify(form.password, user.password)
+        admin = db.query(Admin).filter(Admin.username == form.username).first()
+        if admin:
+            match = password_verify(form.password, admin.password)
             if match:
-                data = TokenData(name = user.name, age=user.age)
+                data = AuthForm(username = admin.username, password = admin.password)
                 token = jwt.encode(dict(data), secret)
                 response.set_cookie('token', token, httponly=True)
                 return {'message': 'Log In Success!'}

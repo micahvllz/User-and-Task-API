@@ -4,10 +4,7 @@ from pydantic import BaseModel
 class UserBase(BaseModel):
     name: str
     age: int
-
-# Schema for request body
-class CreateUser(UserBase):
-    password: str
+    email: str
 
 # Schema for response body
 class User(UserBase):

@@ -15,39 +15,3 @@ app = FastAPI()
 app.include_router(authRouter.router)
 app.include_router(userRouter.router)
 app.include_router(taskRouter.router)
-
-# @app.get('/', response_class=HTMLResponse)
-# def index(request: Request, db: Session = Depends(get_db)):
-#     try:
-#         tasks = db.query(Task).all()
-#         return template.TemplateResponse('index.html', {
-#             'request': request,
-#             'tasks': tasks
-#         })
-#     except Exception as e:
-#         print(e)
-
-
-# admin = {
-#     "username": "admin", 
-#     "password": "admin"
-# }
-
-
-
-# @app.get("/login")
-# def index():
-#     return admin
-
-# @app.post('/login')
-# def loginUser(log: AdminLog):
-#     if admin['username'] == log.username:
-#         if admin['password'] == log.password:
-#             admin['log_id'] = uuid.uuid4()
-#             return {"Sucess": "User successfully logged in"}
-#         if 'log_id' in admin:
-#             del admin['log_id']
-#         return {"Error": "Incorrect Password"}
-#     if 'log_id' in admin:
-#         del admin['log_id']
-#     return {"Error": "Username does not exist"}

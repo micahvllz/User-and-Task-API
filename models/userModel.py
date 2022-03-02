@@ -9,7 +9,7 @@ class User(Base):
     id = Column(String(36), primary_key=True, default=text('UUID()'))
     name = Column(String(255), nullable=False)
     age = Column(Integer, nullable=False)
-    password = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=text('NOW()'))
     updated_at = Column(DateTime, onupdate=text('NOW()'))
 
