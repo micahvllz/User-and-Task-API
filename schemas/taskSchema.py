@@ -1,16 +1,17 @@
 from datetime import datetime as dt
 from pydantic import BaseModel
 
-class PostBase(BaseModel):
-    author_id: str
+class TaskBase(BaseModel):
+    user_id: str
     title: str
-    body: str
+    description: str
+    is_completed: bool
 
 # Schema for request body
-class CreatePost(PostBase):
+class CreateTask(TaskBase):
     pass
 
 #Schema for response body
-class Post(PostBase):
+class Post(TaskBase):
     created_at: dt
     updated_at: dt

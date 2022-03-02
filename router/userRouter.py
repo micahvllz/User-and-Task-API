@@ -12,19 +12,19 @@ router = APIRouter(
 )
 
 @router.get('/')
-def all(db: Session = Depends(get_db)):
+def get_the_list_of_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
     return {'users': users}
 
 @router.get('/{id}')
-def read(id: str, db: Session = Depends(get_db)):
+def get_user_details(id: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     if not user:
         raise HTTPException(404, 'User not found')
     return {'user': user}
 
 @router.post('/')
-def store(user: CreateUser, db: Session = Depends(get_db)):
+def create(user: CreateUser, db: Session = Depends(get_db)):
     to_store = User(
         name = user.name,
         age = user.age,
@@ -61,7 +61,7 @@ def update(id: str, user: CreateUser, db: Session = Depends(get_db)):
     return {'message': 'User updated successfully.'}
 
 @router.delete('/{id}')
-def remove(id: str, db: Session = Depends(get_db)):
+def delete(id: str, db: Session = Depends(get_db)):
     if not db.query(User).filter(User.id == id).delete():
         raise HTTPException(404, 'User to delete is not found')
     db.commit()

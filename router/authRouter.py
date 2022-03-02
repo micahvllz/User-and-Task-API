@@ -37,7 +37,7 @@ def register(request: CreateUser, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/verify')
-def verify(form: AuthForm, response: Response, db: Session = Depends(get_db)):
+def login(form: AuthForm, response: Response, db: Session = Depends(get_db)):
     try:
         user = db.query(User).filter(User.name == form.name).first()
         if user:

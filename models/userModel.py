@@ -13,4 +13,4 @@ class User(Base):
     created_at = Column(DateTime, default=text('NOW()'))
     updated_at = Column(DateTime, onupdate=text('NOW()'))
 
-    posts = relationship('Post', back_populates='author')
+    tasks = relationship('Task', back_populates='user')
